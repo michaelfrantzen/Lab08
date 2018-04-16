@@ -1,3 +1,7 @@
+//Michael Frantzen
+//COSC 3380
+//Lab 08
+
 package com.COSC3380.lab08;
 
 import java.io.File;
@@ -5,16 +9,17 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.Random;
 
 public class Lab08 {
     public static void main(String[] args) throws  IOException {
         //Initializing variables
-        String fileName = "c:/tmp/hello_world.txt";
+        String fileName = "c:/tmp/lab08.txt";
         File file = new File(fileName);
         FileChannel fileChannel;
         ByteBuffer byteBuffer;
         String fileContent = "";
-        int[] mikey = new int[]{77,73,75,69,89};
+        Random rand = new Random();
 
         //Reading the file
         fileChannel = new RandomAccessFile(file, "rw").getChannel();
@@ -23,6 +28,7 @@ public class Lab08 {
         fileChannel.read(byteBuffer);
         byteBuffer.flip();
 
+        //Putting byteBuffer into a String
         while(byteBuffer.hasRemaining()){
             fileContent = fileContent.concat(""+byteBuffer.getChar());
         }
@@ -32,15 +38,9 @@ public class Lab08 {
         //Writing back to the file
         byteBuffer.rewind();
         byteBuffer.clear();
-
-        int i = 0;
         while(byteBuffer.hasRemaining()){
-            if (i >= mikey.length){
-                byteBuffer.putShort((short)32);
-            }else {
-                byteBuffer.putShort((short) mikey[i]);
-                i++;
-            }
+            //Generating random numbers between 32 - 255 for ascii code
+            byteBuffer.putShort((short)(rand.nextInt(255) + 32));
         }
 
         //Rereading the file
@@ -50,6 +50,7 @@ public class Lab08 {
         fileChannel.read(byteBuffer);
         byteBuffer.flip();
 
+        //Putting byteBuffer into a String
         fileContent = "";
         while(byteBuffer.hasRemaining()){
             fileContent = fileContent.concat(""+byteBuffer.getChar());
