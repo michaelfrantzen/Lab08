@@ -10,6 +10,7 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Lab08 {
     public static void main(String[] args) throws  IOException {
@@ -20,6 +21,7 @@ public class Lab08 {
         ByteBuffer byteBuffer;
         String fileContent = "";
         Random rand = new Random();
+        Scanner scanner = new Scanner(System.in);
 
         //Reading the file
         fileChannel = new RandomAccessFile(file, "rw").getChannel();
@@ -35,27 +37,41 @@ public class Lab08 {
 
        System.out.println("Orginal File: " + fileContent);
 
+        //Pausing Application
+        System.out.println("Press Enter to start writing the buffer");
+        String unimportantString = scanner.nextLine();
+
         //Writing back to the file
         byteBuffer.rewind();
         byteBuffer.clear();
-        while(byteBuffer.hasRemaining()){
+        int i = 0;
+        while(byteBuffer.hasRemaining()) {
             //Generating random numbers between 32 - 255 for ascii code
-            byteBuffer.putShort((short)(rand.nextInt(255) + 32));
+            byteBuffer.putShort((short) (rand.nextInt(255) + 32));
+
         }
+            //Writing hello world to the file from array
+//            if (i >= helloWorldArray.length){
+//                byteBuffer.putShort((short)32);
+//            }else {
+//                byteBuffer.putShort((short) helloWorldArray[i]);
+//                i++;
+//            }
+
 
         //Rereading the file
-        fileChannel = new RandomAccessFile(file, "rw").getChannel();
-
-        byteBuffer.rewind();
-        fileChannel.read(byteBuffer);
-        byteBuffer.flip();
-
-        //Putting byteBuffer into a String
-        fileContent = "";
-        while(byteBuffer.hasRemaining()){
-            fileContent = fileContent.concat(""+byteBuffer.getChar());
-        }
-
-        System.out.println("Modified File: " + fileContent);
+//        fileChannel = new RandomAccessFile(file, "rw").getChannel();
+//
+//        byteBuffer.rewind();
+//        fileChannel.read(byteBuffer);
+//        byteBuffer.flip();
+//
+//        //Putting byteBuffer into a String
+//        fileContent = "";
+//        while(byteBuffer.hasRemaining()){
+//            fileContent = fileContent.concat(""+byteBuffer.getChar());
+//        }
+//
+//        System.out.println("Modified File: " + fileContent);
     }
 }
